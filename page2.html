@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品信息页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        /* 外层容器 */
+        .container {
+            padding: 20px;
+        }
+        /* 卡片样式 */
+        .card {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .card h3 {
+            margin-top: 0;
+        }
+        .add-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            display: none !important; /* 默认隐藏，使用!important来保证优先级 */
+        }
+        .add-btn:hover {
+            background-color: #45a049;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            width: 400px;
+            border-radius: 8px;
+        }
+        .popup input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .popup button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .popup button:hover {
+            background-color: #45a049;
+        }
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+        .popup .close-btn:hover {
+            background-color: #e53935;
+        }
+        .card:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+    <script>
+        // 控制显示的内容
+        function showProductInfo() {
+            document.getElementById('product-info-wrapper').style.display = 'block';
+        }
+
+        function showAddButton() {
+            // 确保新增按钮的样式能正常显示
+            var addButton = document.getElementById('add-btn-wrapper');
+            addButton.style.display = 'block';
+            addButton.style.zIndex = '100'; // 确保按钮在最上层
+        }
+
+        function openPopup() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // 事件监听器
+        window.onload = function() {
+            // 监听点击基础信息
+            document.getElementById('basic-info-wrapper').addEventListener('click', function() {
+                showProductInfo();
+            });
+
+            // 监听点击产品信息
+            document.getElementById('product-info-wrapper').addEventListener('click', function() {
+                showAddButton();
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <!-- 外层容器 -->
+    <div class="container">
+        <!-- 按照XPath路径构建基础信息部分 -->
+        <div id="basic-info-wrapper">
+            <div style="padding: 20px 0;">
+                <div style="padding: 20px; background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <h3>基础信息</h3>
+                    <p>这是基础信息的内容。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 按照XPath路径构建产品信息部分 -->
+        <div id="product-info-wrapper" style="display:none;">
+            <div style="padding: 20px 0;">
+                <div style="padding: 20px; background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <h3>产品信息</h3>
+                    <p>这是产品信息的内容。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 按照XPath路径构建新增按钮部分 -->
+        <div id="add-btn-wrapper" style="display:none;">
+            <div style="padding: 20px 0;">
+                <button id="add-btn" onclick="openPopup()">新增</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增弹窗 -->
+    <div id="popup" class="popup">
+        <button class="close-btn" onclick="closePopup()">×</button>
+        <h3>新增产品</h3>
+        <label for="product-id">产品编号</label>
+        <input type="text" id="product-id" name="product-id" placeholder="请输入产品编号">
+        <label for="drawing-number">图号</label>
+        <input type="text" id="drawing-number" name="drawing-number" placeholder="请输入图号">
+        <label for="product-name">产品名称</label>
+        <input type="text" id="product-name" name="product-name" placeholder="请输入产品名称">
+        <label for="weight-upper">重量上限</label>
+        <input type="text" id="weight-upper" name="weight-upper" placeholder="请输入重量上限">
+        <label for="weight-lower">重量下限</label>
+        <input type="text" id="weight-lower" name="weight-lower" placeholder="请输入重量下限">
+        <label for="version">版本号</label>
+        <input type="text" id="version" name="version" placeholder="请输入版本号">
+        <button onclick="alert('保存成功')">保存</button>
+    </div>
+
+</body>
+</html>

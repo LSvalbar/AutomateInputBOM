@@ -63,7 +63,7 @@ class MainWindow(QWidget):
         try:
             # 打开目标页面
             browser_tab.get("http://192.168.0.21:8080/xbiot_fsd_mes")
-            browser_tab.wait.load_start()
+            browser_tab.wait.doc_loaded()
             # 账户名
             account_ele = browser_tab.ele('x://html/body/div/div[2]/div[2]/form/div[1]/input')
             account_ele.input('D4116')
@@ -75,18 +75,21 @@ class MainWindow(QWidget):
             # 登录
             login_btn_ele = browser_tab.ele('x://html/body/div/div[2]/div[2]/form/div[3]/a')
             login_btn_ele.click()
-            browser_tab.wait.load_start()
+            browser_tab.wait.doc_loaded()
             # 基础信息
             foundation_info_ele = browser_tab.ele('x://html/body/div[2]/div[2]/div[4]/div[1]')
-            browser_tab.wait.eles_loaded('x://html/body/div[2]/div[2]/div[4]/div[1]')
+            #browser_tab.wait.eles_loaded('x://html/body/div[2]/div[2]/div[4]/div[1]')
+            browser_tab.wait.doc_loaded()
             foundation_info_ele.wait.clickable()
             foundation_info_ele.click()
             # 产品信息
             product_info_ele = browser_tab.ele('x://html/body/div[2]/div[2]/div[4]/div[2]/div[3]')
-            browser_tab.wait.eles_loaded('x://html/body/div[2]/div[2]/div[4]/div[2]/div[3]')
+            #browser_tab.wait.eles_loaded('x://html/body/div[2]/div[2]/div[4]/div[2]/div[3]')
+            browser_tab.wait.doc_loaded()
             product_info_ele.wait.clickable()
             product_info_ele.click()
-            browser_tab.wait.eles_loaded('x://html/body/div[1]/div[2]/button[1]')
+            browser_tab.wait.doc_loaded()
+            #browser_tab.wait.eles_loaded('x://html/body/div[1]/div[2]/button[1]')
             # 新增
             new_add_ele = browser_tab.ele('x://html/body/div[1]/div[2]/button[1]')
             for count in range(len(data[0])):
@@ -124,7 +127,7 @@ class MainWindow(QWidget):
                 save_btn_ele.click()
                 browser_tab.wait.load_start()
         except Exception as error:
-            self.show_error_message(error)
+            self.show_error_message(error.__str__())
         finally:
             pass
 
