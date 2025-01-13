@@ -47,12 +47,12 @@ class MainWindow(QWidget):
     def read_excel(self, file_path):
         total_list = []
         df = pd.read_excel(file_path)
-        page_num_index = df.iloc[:, 0].tolist()
-        product_num_index = df.iloc[:, 1].tolist()
-        product_name_index = df.iloc[:, 2].tolist()
-        total_list.append(page_num_index)
-        total_list.append(product_num_index)
-        total_list.append(product_name_index)
+        product_num_list = df.iloc[:, 0].tolist()
+        graphy_num_list = df.iloc[:, 1].tolist()
+        version_num_list = df.iloc[:, 2].tolist()
+        total_list.append(product_num_list)
+        total_list.append(graphy_num_list)
+        total_list.append(version_num_list)
         return total_list
 
     # Step 2: 使用 DrissionPage 执行自动化任务
@@ -60,22 +60,69 @@ class MainWindow(QWidget):
         co = ChromiumOptions()
         co.set_argument('--start-maximized')
         browser_tab = Chromium(co).latest_tab
-        str = ['狂飙', '人民的名义', '三国演义', '红楼梦', '西游记']
         try:
             # 打开目标页面
-            browser_tab.get("http://www.baidu.com")
+            browser_tab.get("http://192.168.0.21:8080/xbiot_fsd_mes")
             browser_tab.wait.load_start()
+            # 账户名
+            account_ele = browser_tab.ele('x://html/body/div/div[2]/div[2]/form/div[1]/input')
+            account_ele.input('D4116')
+            browser_tab.wait(1,1.5)
+            # 密码
+            password_ele = browser_tab.ele('x://html/body/div/div[2]/div[2]/form/div[2]/input')
+            password_ele.input('123')
+            browser_tab.wait(1, 1.5)
+            # 登录
+            login_btn_ele = browser_tab.ele('x://html/body/div/div[2]/div[2]/form/div[3]/a')
+            login_btn_ele.click()
+            browser_tab.wait.load_start()
+            # 基础信息
+            foundation_info_ele = browser_tab.ele('x://html/body/div[2]/div[2]/div[4]/div[1]')
+            browser_tab.wait.eles_loaded('x://html/body/div[2]/div[2]/div[4]/div[1]')
+            foundation_info_ele.wait.clickable()
+            foundation_info_ele.click()
+            # 产品信息
+            product_info_ele = browser_tab.ele('x://html/body/div[2]/div[2]/div[4]/div[2]/div[3]')
+            browser_tab.wait.eles_loaded('x://html/body/div[2]/div[2]/div[4]/div[2]/div[3]')
+            product_info_ele.wait.clickable()
+            product_info_ele.click()
+            browser_tab.wait.eles_loaded('x://html/body/div[1]/div[2]/button[1]')
+            # 新增
+            new_add_ele = browser_tab.ele('x://html/body/div[1]/div[2]/button[1]')
             for count in range(len(data[0])):
-                # input_ele = browser_tab.ele('x://html/body/div[1]/div[1]/div[5]/div/div/form/span[1]/input')
-                input_ele = browser_tab.ele('#kw')
-                input_ele.wait.enabled()
-                input_ele.clear()
-                input_ele.wait(0.5, 1)
-                input_ele.input(str[count])
-                input_ele.wait(0.5, 1)
-                search_btn = browser_tab.ele('@value=百度一下')
-                search_btn.wait.clickable()
-                search_btn.click()
+                # 新增
+                new_add_ele.wait.clickable()
+                new_add_ele.click()
+                browser_tab.wait.eles_loaded('x://html/body/div[4]/div/div[2]/div/div[1]/div/input')
+                # 产品编号
+                product_num_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[1]/div/input')
+                #product_num_ele.wait.enabled()
+                product_num_ele.input(data[0][count])
+                # 图号
+                graphy_num_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[2]/div/input')
+                #graphy_num_ele.wait.enabled()
+                graphy_num_ele.click(data[1][count])
+                # 产品名称
+                product_name_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[3]/div/input')
+                #product_name_ele.wait.enabled()
+                product_name_ele.input(data[0][count])
+                # 重量上限
+                weight_max_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[4]/div/input')
+                #weight_max_ele.wait.enabled()
+                weight_max_ele.input(0)
+                # 重量下限
+                weight_min_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[5]/div/input')
+                #weight_min_ele.wait.enabled()
+                weight_min_ele.input(0)
+                # 版本号
+                version_no_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[6]/div/input')
+                #version_no_ele.wait.enabled()
+                version_no_ele.input(data[2][count])
+                # 保存
+                save_btn_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[7]/button')
+                save_btn_ele.wait.enabled()
+                save_btn_ele.click()
+                browser_tab.wait.load_start()
         except Exception as error:
             self.show_error_message(error)
         finally:

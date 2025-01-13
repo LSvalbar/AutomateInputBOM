@@ -16,9 +16,9 @@ IMPORTANT: Do NOT post this list to the issue-tracker. Use it as a basis for
 
 missing module named _frozen_importlib_external - imported by importlib._bootstrap (top-level), importlib (top-level), importlib.abc (top-level)
 excluded module named _frozen_importlib - imported by importlib (top-level), importlib.abc (top-level), PyInstaller.loader.pyimod01_archive (top-level)
-missing module named 'org.python' - imported by copy (top-level), xml.sax (top-level)
+missing module named org - imported by copy (top-level)
+missing module named 'org.python' - imported by pickle (top-level), xml.sax (top-level)
 missing module named 'java.lang' - imported by platform (top-level), xml.sax._exceptions (top-level)
-missing module named org - imported by pickle (top-level)
 missing module named multiprocessing.BufferTooShort - imported by multiprocessing (top-level), multiprocessing.connection (top-level)
 missing module named multiprocessing.AuthenticationError - imported by multiprocessing (top-level), multiprocessing.connection (top-level)
 missing module named grp - imported by shutil (top-level), tarfile (top-level), pathlib (top-level), distutils.archive_util (top-level), setuptools._distutils.archive_util (optional)
