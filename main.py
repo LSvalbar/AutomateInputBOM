@@ -10,7 +10,7 @@ from DrissionPage import Chromium, ChromiumOptions
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("输入 Excel 文件路径")
+        self.setWindowTitle("自动输入BOM信息")
         self.setGeometry(200, 200, 500, 300)
         self.setAutoFillBackground(True)
 
@@ -63,7 +63,6 @@ class MainWindow(QWidget):
         try:
             # 打开目标页面
             browser_tab.get("http://192.168.0.21:8080/xbiot_fsd_mes")
-            browser_tab.wait.doc_loaded()
             # 账户名
             account_ele = browser_tab.ele('x://html/body/div/div[2]/div[2]/form/div[1]/input')
             account_ele.input('D4116')
@@ -75,6 +74,7 @@ class MainWindow(QWidget):
             # 登录
             login_btn_ele = browser_tab.ele('x://html/body/div/div[2]/div[2]/form/div[3]/a')
             login_btn_ele.click()
+            browser_tab.wait.load_start()
             browser_tab.wait.doc_loaded()
             # 基础信息
             foundation_info_ele = browser_tab.ele('x://html/body/div[2]/div[2]/div[4]/div[1]')
@@ -88,46 +88,49 @@ class MainWindow(QWidget):
             browser_tab.wait.doc_loaded()
             product_info_ele.wait.clickable()
             product_info_ele.click()
+            browser_tab.wait.load_start()
             browser_tab.wait.doc_loaded()
             #browser_tab.wait.eles_loaded('x://html/body/div[1]/div[2]/button[1]')
             # 新增
             new_add_ele = browser_tab.ele('x://html/body/div[1]/div[2]/button[1]')
             for count in range(len(data[0])):
                 # 新增
+                browser_tab.wait.load_start()
+                browser_tab.wait.doc_loaded()
                 new_add_ele.wait.clickable()
                 new_add_ele.click()
-                browser_tab.wait.eles_loaded('x://html/body/div[4]/div/div[2]/div/div[1]/div/input')
                 # 产品编号
-                product_num_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[1]/div/input')
+                product_num_ele = browser_tab.ele('x://*[@id="mainForm"]/div[1]/div/input')
                 #product_num_ele.wait.enabled()
                 product_num_ele.input(data[0][count])
                 # 图号
-                graphy_num_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[2]/div/input')
+                graphy_num_ele = browser_tab.ele('x://*[@id="mainForm"]/div[2]/div/input')
                 #graphy_num_ele.wait.enabled()
-                graphy_num_ele.click(data[1][count])
+                graphy_num_ele.input(data[1][count])
                 # 产品名称
-                product_name_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[3]/div/input')
+                product_name_ele = browser_tab.ele('x://*[@id="mainForm"]/div[3]/div/input')
                 #product_name_ele.wait.enabled()
                 product_name_ele.input(data[0][count])
                 # 重量上限
-                weight_max_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[4]/div/input')
+                weight_max_ele = browser_tab.ele('x://*[@id="mainForm"]/div[4]/div/input')
                 #weight_max_ele.wait.enabled()
                 weight_max_ele.input(0)
                 # 重量下限
-                weight_min_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[5]/div/input')
+                weight_min_ele = browser_tab.ele('x://*[@id="mainForm"]/div[5]/div/input')
                 #weight_min_ele.wait.enabled()
                 weight_min_ele.input(0)
                 # 版本号
-                version_no_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[6]/div/input')
+                version_no_ele = browser_tab.ele('x://*[@id="mainForm"]/div[6]/div/input')
                 #version_no_ele.wait.enabled()
                 version_no_ele.input(data[2][count])
                 # 保存
-                save_btn_ele = browser_tab.ele('x://html/body/div[4]/div/div[2]/div/div[7]/button')
+                save_btn_ele = browser_tab.ele('x://*[@id="mainFormSave"]')
                 save_btn_ele.wait.enabled()
                 save_btn_ele.click()
                 browser_tab.wait.load_start()
         except Exception as error:
             self.show_error_message(error.__str__())
+            return
         finally:
             pass
 
